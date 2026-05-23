@@ -96,10 +96,17 @@ export default function Room() {
   }, [room])
 
   const myRole: UserRole = (() => {
+    console.log('🔎 Calculating myRole:')
+    console.log('  - room:', !!room, 'myId:', myId)
     if (!room || !myId) return 'spectator'
+    console.log('  - room.owner.id:', room.owner.id, 'myId:', myId, 'match:', room.owner.id === myId)
+    console.log('  - room.redPlayer.id:', room.redPlayer?.id, 'myId:', myId, 'match:', room.redPlayer?.id === myId)
+    console.log('  - room.blackPlayer.id:', room.blackPlayer?.id, 'myId:', myId, 'match:', room.blackPlayer?.id === myId)
+    
+    // 先检查是否是玩家（即便是房主或管理员也能玩）
+    if (room.redPlayer?.id === myId || room.blackPlayer?.id === myId) return 'player'
     if (room.owner.id === myId) return 'owner'
     if (room.admins.find(a => a.id === myId)) return 'admin'
-    if (room.redPlayer?.id === myId || room.blackPlayer?.id === myId) return 'player'
     return 'spectator'
   })()
 
@@ -113,6 +120,13 @@ export default function Room() {
   const isManager = myRole === 'owner' || myRole === 'admin'
   const isPlayer = myRole === 'player'
   const isSpectator = myRole === 'spectator'
+  
+  console.log('📋 Room status:')
+  console.log('  - myRole:', myRole)
+  console.log('  - mySide:', mySide)
+  console.log('  - isPlayer:', isPlayer)
+  console.log('  - room.status:', room?.status)
+  console.log('  - currentTurn:', currentTurn)
 
   const handleMakeMove = useCallback((move: any) => {
     socket?.emit('make-move', move)
