@@ -43,10 +43,23 @@ export default function ChineseChessBoard({ board, currentTurn, isPlayer, mySide
     (mySide === 'red' && turn === 'red') || (mySide === 'black' && turn === 'black')
   )
 
+  console.log('🎯 ChessBoard state:', {
+    isPlayer,
+    mySide,
+    currentTurn,
+    turn,
+    canMove,
+    hasBoard: !!board
+  })
+
   const handleIntersectionClick = useCallback((row: number, col: number) => {
+    console.log('👆 Click at:', row, col)
+    console.log('  - canMove:', canMove, 'hasBoard:', !!board)
+    
     if (!canMove || !board) return
 
     const piece = board[row]?.[col]
+    console.log('  - piece at click:', piece)
 
     if (selectedPos) {
       const [selRow, selCol] = selectedPos
