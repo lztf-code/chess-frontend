@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, useCallback, ReactNode 
 import { io, Socket } from 'socket.io-client'
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001'
+console.log('Server URL:', SERVER_URL)
 
 const SocketContext = createContext<Socket | null>(null)
 
