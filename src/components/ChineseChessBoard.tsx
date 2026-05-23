@@ -46,16 +46,25 @@ export default function ChineseChessBoard({ board, currentTurn, isPlayer, mySide
   console.log('ChessBoard state:', { isPlayer, mySide, currentTurn, turn, canMove, board: !!board })
 
   const handleIntersectionClick = useCallback((row: number, col: number) => {
-    console.log('Click:', row, col, { canMove, hasBoard: !!board })
-    if (!canMove || !board) return
+    console.log('=== 点击事件 ===')
+    console.log('位置:', { row, col })
+    console.log('状态:', { canMove, hasBoard: !!board, selectedPos })
+    if (!canMove || !board) {
+      console.log('无法移动 - 条件不满足')
+      return
+    }
 
     const piece = board[row]?.[col]
+    console.log('棋子:', piece)
 
     if (selectedPos) {
       const [selRow, selCol] = selectedPos
       const move: Move = { fromRow: selRow, fromCol: selCol, toRow: row, toCol: col }
+      console.log('尝试走棋:', move)
+      console.log('当前回合:', turn)
 
       if (isValidMove(board, move, turn)) {
+        console.log('✅ 移动有效，发送给服务器')
         onMove(move)
         setSelectedPos(null)
         setValidMoves([])
@@ -68,17 +77,27 @@ export default function ChineseChessBoard({ board, currentTurn, isPlayer, mySide
         if (isCheckmate(newBoard, nextTurn)) {
           setTimeout(() => onDeclareGameOver(turn, '将杀'), 300)
         }
-      } else if (piece && piece.color === turn && canMove) {
-        setSelectedPos([row, col])
-        setValidMoves(getAllValidMoves(board, turn).filter(m => m.fromRow === row && m.fromCol === col))
       } else {
-        setSelectedPos(null)
-        setValidMoves([])
+        console.log('❌ 移动无效')
+        if (piece && piece.color === turn && canMove) {
+          console.log('选中新棋子')
+          setSelectedPos([row, col])
+          setValidMoves(getAllValidMoves(board, turn).filter(m => m.fromRow === row && m.fromCol === col))
+        } else {
+          console.log('清除选中')
+          setSelectedPos(null)
+          setValidMoves([])
+        }
       }
     } else {
       if (piece && piece.color === turn && canMove) {
+        console.log('选中棋子:', { row, col, piece })
         setSelectedPos([row, col])
-        setValidMoves(getAllValidMoves(board, turn).filter(m => m.fromRow === row && m.fromCol === col))
+        const moves = getAllValidMoves(board, turn).filter(m => m.fromRow === row && m.fromCol === col)
+        console.log('有效移动:', moves)
+        setValidMoves(moves)
+      } else {
+        console.log('不是可点击的棋子')
       }
     }
   }, [canMove, board, turn, selectedPos, onMove, onDeclareGameOver])

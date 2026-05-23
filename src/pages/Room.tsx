@@ -128,6 +128,7 @@ export default function Room() {
   const isSpectator = myRole === 'spectator'
 
   const handleMakeMove = useCallback((move: any) => {
+    console.log('🚀 发送走棋到服务器:', move)
     socket?.emit('make-move', move)
   }, [socket])
 
