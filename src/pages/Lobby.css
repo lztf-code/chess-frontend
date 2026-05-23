@@ -1,0 +1,238 @@
+.lobby {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.lobby-card {
+  background: var(--xuan-gray, #2a2218);
+  border: 1px solid var(--border-dim, #3a3020);
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  max-width: 400px;
+  margin: 60px auto 0;
+}
+
+.lobby-card h2 {
+  color: var(--zhujin, #C9A96E);
+  margin-bottom: 8px;
+  letter-spacing: 4px;
+}
+
+.lobby-card p {
+  color: #9a8a70;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.lobby-input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border-dim, #3a3020);
+  background: var(--mo-black, #1a1410);
+  color: var(--ya-bai, #f5f0e8);
+  font-size: 15px;
+  margin-bottom: 12px;
+  font-family: inherit;
+  outline: none;
+}
+
+.lobby-input:focus {
+  border-color: var(--zhujin, #C9A96E);
+}
+
+.lobby-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.lobby-header h2 {
+  color: var(--zhujin, #C9A96E);
+  letter-spacing: 4px;
+}
+
+.lobby-nickname {
+  color: #9a8a70;
+  font-size: 14px;
+}
+
+.lobby-actions {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.direct-join {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.direct-join-input {
+  width: 200px !important;
+  margin-bottom: 0 !important;
+}
+
+.direct-join-btn {
+  width: auto;
+  padding: 10px 20px;
+  white-space: nowrap;
+}
+
+.room-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.empty-hint {
+  text-align: center;
+  color: #9a8a70;
+  padding: 40px;
+  font-size: 14px;
+}
+
+.room-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--xuan-gray, #2a2218);
+  border: 1px solid var(--border-dim, #3a3020);
+  border-radius: 8px;
+  padding: 14px 18px;
+  transition: border-color 0.2s;
+}
+
+.room-card:hover {
+  border-color: var(--zhujin, #C9A96E);
+}
+
+.room-card-name {
+  font-size: 16px;
+  color: #e8dcc8;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.lock-icon {
+  margin-right: 6px;
+}
+
+.room-card-meta {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.game-type-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.game-type-badge.chinese {
+  background: rgba(178, 34, 34, 0.2);
+  color: #e8a0a0;
+  border: 1px solid rgba(178, 34, 34, 0.4);
+}
+
+.game-type-badge.international {
+  background: rgba(74, 124, 89, 0.2);
+  color: #a0d0b0;
+  border: 1px solid rgba(74, 124, 89, 0.4);
+}
+
+.status-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.status-badge.waiting {
+  background: rgba(201, 169, 110, 0.15);
+  color: #C9A96E;
+}
+
+.status-badge.playing {
+  background: rgba(139, 37, 0, 0.2);
+  color: #e8a090;
+}
+
+.status-badge.finished {
+  background: rgba(100, 100, 100, 0.2);
+  color: #888;
+}
+
+.room-card-detail {
+  font-size: 12px;
+  color: #9a8a70;
+}
+
+.room-join-btn {
+  width: auto;
+  padding: 8px 20px;
+  white-space: nowrap;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 8, 5, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal-dialog {
+  background: linear-gradient(160deg, #3a2a1a, #2a1a0a);
+  border: 2px solid var(--zhujin, #C9A96E);
+  border-radius: 12px;
+  padding: 28px;
+  width: 380px;
+  max-width: 90vw;
+}
+
+.modal-dialog h3 {
+  color: var(--zhujin, #C9A96E);
+  margin-bottom: 16px;
+  letter-spacing: 3px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  color: #9a8a70;
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.modal-actions .btn {
+  flex: 1;
+}

@@ -1,0 +1,155 @@
+.game-title {
+  text-align: center;
+  color: var(--zhujin, #C9A96E);
+  font-size: 28px;
+  margin-bottom: 16px;
+  letter-spacing: 6px;
+}
+
+.board-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.captured-row {
+  min-height: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px 8px;
+  justify-content: center;
+}
+
+.captured-piece {
+  font-size: 18px;
+  opacity: 0.7;
+}
+
+.captured-piece.red {
+  color: #c0392b;
+}
+
+.captured-piece.black {
+  color: #a0a0a0;
+}
+
+/* 棋盘容器 - 包裹SVG和棋子层 */
+.chinese-board-container {
+  position: relative;
+  border: 4px solid #5a3a1a;
+  border-radius: 4px;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.5),
+    inset 0 0 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.chinese-board-svg {
+  display: block;
+}
+
+/* 棋子层 - 绝对定位覆盖在SVG上 */
+.pieces-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+/* 交叉点点击区域 */
+.intersection-hit {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.intersection-hit:hover {
+  background: rgba(201, 169, 110, 0.2);
+}
+
+/* 可走位置提示点 */
+.valid-dot {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(139, 37, 0, 0.4);
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.valid-dot:hover {
+  background: rgba(139, 37, 0, 0.6);
+}
+
+/* 棋子 */
+.piece {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  line-height: 1;
+  font-size: 26px;
+  font-weight: bold;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 5;
+  transition: transform 0.12s, box-shadow 0.12s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.piece:hover {
+  transform: scale(1.08);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.5);
+}
+
+.piece.red {
+  background: radial-gradient(circle at 35% 35%, #fff5ee, #f0dfc0);
+  color: #8b0000;
+  border: 2.5px solid #8b0000;
+}
+
+.piece.black {
+  background: radial-gradient(circle at 35% 35%, #4a4a4a, #2a2a2a);
+  color: #f0e8d8;
+  border: 2.5px solid #6a6a6a;
+}
+
+.piece.selected {
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.8), 0 3px 12px rgba(0, 0, 0, 0.5);
+  transform: scale(1.08);
+}
+
+.piece.valid-target {
+  box-shadow: 0 0 0 3px rgba(139, 37, 0, 0.5), 0 3px 12px rgba(0, 0, 0, 0.5);
+}
+
+.info-section {
+  margin-bottom: 8px;
+}
+
+.info-section label {
+  display: block;
+  font-size: 13px;
+  color: #9a8a70;
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+
+.move-history .label {
+  font-size: 13px;
+  color: #9a8a70;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border-dim, #3a3020);
+  letter-spacing: 1px;
+}
