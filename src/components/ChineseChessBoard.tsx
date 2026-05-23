@@ -148,17 +148,18 @@ export default function ChineseChessBoard({ board, currentTurn, isPlayer, mySide
 
       <div className="pieces-layer" style={{ width: SVG_W, height: SVG_H }}>
         {validMoves.map(m => !board[m.toRow]?.[m.toCol] ? (
-          <div key={`dot-${m.toRow}-${m.toCol}`} className="valid-dot" style={{ left: px(m.toCol) - 8, top: py(m.toRow) - 8 }} onClick={() => handleIntersectionClick(m.toRow, m.toCol)} />
+          <div key={`dot-${m.toRow}-${m.toCol}`} className="valid-dot" style={{ left: px(m.toCol) - 8, top: py(m.toRow) - 8 }} onClick={() => handleIntersectionClick(m.toRow, m.toCol)} onTouchStart={(e) => { e.preventDefault(); handleIntersectionClick(m.toRow, m.toCol) }} />
         ) : null)}
         {board.map((row, r) => row.map((piece, c) => piece ? (
           <div key={`p-${r}-${c}`} className={`piece ${piece.color} ${isSelected(r, c) ? 'selected' : ''} ${isValidTarget(r, c) ? 'valid-target' : ''}`}
             style={{ left: px(c) - PIECE_R, top: py(r) - PIECE_R, width: PIECE_R * 2, height: PIECE_R * 2 }}
-            onClick={() => handleIntersectionClick(r, c)}>
+            onClick={() => handleIntersectionClick(r, c)}
+            onTouchStart={(e) => { e.preventDefault(); handleIntersectionClick(r, c) }}>
             {getPieceName(piece)}
           </div>
         ) : null))}
         {board.map((row, r) => row.map((_, c) => !board[r][c] ? (
-          <div key={`e-${r}-${c}`} className="intersection-hit" style={{ left: px(c) - 16, top: py(r) - 16 }} onClick={() => handleIntersectionClick(r, c)} />
+          <div key={`e-${r}-${c}`} className="intersection-hit" style={{ left: px(c) - 16, top: py(r) - 16, width: 32, height: 32 }} onClick={() => handleIntersectionClick(r, c)} onTouchStart={(e) => { e.preventDefault(); handleIntersectionClick(r, c) }} />
         ) : null))}
       </div>
     </div>

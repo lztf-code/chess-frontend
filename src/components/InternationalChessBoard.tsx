@@ -102,7 +102,8 @@ export default function InternationalChessBoard({ board, currentTurn, isPlayer, 
               return (
                 <div key={c}
                   className={`icell ${isLight ? 'ilight' : 'idark'} ${isSel ? 'iselected' : ''} ${isVal ? 'ivalid-target' : ''}`}
-                  onClick={() => handleCellClick(r, c)}>
+                  onClick={() => handleCellClick(r, c)}
+                  onTouchStart={(e) => { e.preventDefault(); handleCellClick(r, c) }}>
                   {piece && <span className={`ipiece ${piece.color}`}>{getPieceSymbol(piece)}</span>}
                   {isVal && !piece && <div className="ivalid-dot" />}
                 </div>
