@@ -42,6 +42,16 @@ export default function ChineseChessBoard({ board, currentTurn, isPlayer, mySide
   const canMove = isPlayer && !gameOver && (
     (mySide === 'red' && turn === 'red') || (mySide === 'black' && turn === 'black')
   )
+  
+  console.log('🔍 调试信息:')
+  console.log('  mySide 类型:', typeof mySide)
+  console.log('  mySide 值:', JSON.stringify(mySide))
+  console.log('  turn 类型:', typeof turn)
+  console.log('  turn 值:', JSON.stringify(turn))
+  console.log('  (mySide === "red"):', mySide === 'red')
+  console.log('  (mySide === "black"):', mySide === 'black')
+  console.log('  (turn === "red"):', turn === 'red')
+  console.log('  (turn === "black"):', turn === 'black')
 
   console.log('♟️ ChessBoard 状态:')
   console.log('  - isPlayer:', isPlayer)
