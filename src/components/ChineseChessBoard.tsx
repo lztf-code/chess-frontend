@@ -39,7 +39,8 @@ export default function ChineseChessBoard({ board, currentTurn, isPlayer, mySide
   const currentBoard = board || []
   const turn: PieceColor = currentTurn as PieceColor
 
-  const canMove = isPlayer && !gameOver && (
+  // 临时修复：只要 mySide 存在且匹配回合，就允许移动
+  const canMove = (isPlayer || mySide !== null) && !gameOver && (
     (mySide === 'red' && turn === 'red') || (mySide === 'black' && turn === 'black')
   )
 
