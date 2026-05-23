@@ -42,45 +42,17 @@ export default function ChineseChessBoard({ board, currentTurn, isPlayer, mySide
   const canMove = isPlayer && !gameOver && (
     (mySide === 'red' && turn === 'red') || (mySide === 'black' && turn === 'black')
   )
-  
-  console.log('🔍 调试信息:')
-  console.log('  mySide 类型:', typeof mySide)
-  console.log('  mySide 值:', JSON.stringify(mySide))
-  console.log('  turn 类型:', typeof turn)
-  console.log('  turn 值:', JSON.stringify(turn))
-  console.log('  (mySide === "red"):', mySide === 'red')
-  console.log('  (mySide === "black"):', mySide === 'black')
-  console.log('  (turn === "red"):', turn === 'red')
-  console.log('  (turn === "black"):', turn === 'black')
-
-  console.log('♟️ ChessBoard 状态:')
-  console.log('  - isPlayer:', isPlayer)
-  console.log('  - mySide:', mySide)
-  console.log('  - currentTurn:', currentTurn)
-  console.log('  - turn:', turn)
-  console.log('  - canMove:', canMove)
-  console.log('  - board:', !!board)
 
   const handleIntersectionClick = useCallback((row: number, col: number) => {
-    console.log('=== 点击事件 ===')
-    console.log('位置:', { row, col })
-    console.log('状态:', { canMove, hasBoard: !!board, selectedPos })
-    if (!canMove || !board) {
-      console.log('无法移动 - 条件不满足')
-      return
-    }
+    if (!canMove || !board) return
 
     const piece = board[row]?.[col]
-    console.log('棋子:', piece)
 
     if (selectedPos) {
       const [selRow, selCol] = selectedPos
       const move: Move = { fromRow: selRow, fromCol: selCol, toRow: row, toCol: col }
-      console.log('尝试走棋:', move)
-      console.log('当前回合:', turn)
 
       if (isValidMove(board, move, turn)) {
-        console.log('✅ 移动有效，发送给服务器')
         onMove(move)
         setSelectedPos(null)
         setValidMoves([])
@@ -93,27 +65,17 @@ export default function ChineseChessBoard({ board, currentTurn, isPlayer, mySide
         if (isCheckmate(newBoard, nextTurn)) {
           setTimeout(() => onDeclareGameOver(turn, '将杀'), 300)
         }
+      } else if (piece && piece.color === turn && canMove) {
+        setSelectedPos([row, col])
+        setValidMoves(getAllValidMoves(board, turn).filter(m => m.fromRow === row && m.fromCol === col))
       } else {
-        console.log('❌ 移动无效')
-        if (piece && piece.color === turn && canMove) {
-          console.log('选中新棋子')
-          setSelectedPos([row, col])
-          setValidMoves(getAllValidMoves(board, turn).filter(m => m.fromRow === row && m.fromCol === col))
-        } else {
-          console.log('清除选中')
-          setSelectedPos(null)
-          setValidMoves([])
-        }
+        setSelectedPos(null)
+        setValidMoves([])
       }
     } else {
       if (piece && piece.color === turn && canMove) {
-        console.log('选中棋子:', { row, col, piece })
         setSelectedPos([row, col])
-        const moves = getAllValidMoves(board, turn).filter(m => m.fromRow === row && m.fromCol === col)
-        console.log('有效移动:', moves)
-        setValidMoves(moves)
-      } else {
-        console.log('不是可点击的棋子')
+        setValidMoves(getAllValidMoves(board, turn).filter(m => m.fromRow === row && m.fromCol === col))
       }
     }
   }, [canMove, board, turn, selectedPos, onMove, onDeclareGameOver])
@@ -164,18 +126,18 @@ export default function ChineseChessBoard({ board, currentTurn, isPlayer, mySide
 
       <div className="pieces-layer" style={{ width: SVG_W, height: SVG_H }}>
         {validMoves.map(m => !board[m.toRow]?.[m.toCol] ? (
-          <div key={`dot-${m.toRow}-${m.toCol}`} className="valid-dot" style={{ left: px(m.toCol) - 8, top: py(m.toRow) - 8 }} onClick={() => handleIntersectionClick(m.toRow, m.toCol)} onTouchStart={(e) => { e.preventDefault(); handleIntersectionClick(m.toRow, m.toCol) }} />
+          <div key={`dot-${m.toRow}-${m.toCol}`} className="valid-dot" style={{ left: px(m.toCol) - 16, top: py(m.toRow) - 16, width: 32, height: 32 }} onClick={() => handleIntersectionClick(m.toRow, m.toCol)} onTouchStart={(e) => { e.preventDefault(); handleIntersectionClick(m.toRow, m.toCol); }} />
         ) : null)}
         {board.map((row, r) => row.map((piece, c) => piece ? (
           <div key={`p-${r}-${c}`} className={`piece ${piece.color} ${isSelected(r, c) ? 'selected' : ''} ${isValidTarget(r, c) ? 'valid-target' : ''}`}
             style={{ left: px(c) - PIECE_R, top: py(r) - PIECE_R, width: PIECE_R * 2, height: PIECE_R * 2 }}
             onClick={() => handleIntersectionClick(r, c)}
-            onTouchStart={(e) => { e.preventDefault(); handleIntersectionClick(r, c) }}>
+            onTouchStart={(e) => { e.preventDefault(); handleIntersectionClick(r, c); }}>
             {getPieceName(piece)}
           </div>
         ) : null))}
         {board.map((row, r) => row.map((_, c) => !board[r][c] ? (
-          <div key={`e-${r}-${c}`} className="intersection-hit" style={{ left: px(c) - 16, top: py(r) - 16, width: 32, height: 32 }} onClick={() => handleIntersectionClick(r, c)} onTouchStart={(e) => { e.preventDefault(); handleIntersectionClick(r, c) }} />
+          <div key={`e-${r}-${c}`} className="intersection-hit" style={{ left: px(c) - 16, top: py(r) - 16, width: 32, height: 32 }} onClick={() => handleIntersectionClick(r, c)} onTouchStart={(e) => { e.preventDefault(); handleIntersectionClick(r, c); }} />
         ) : null))}
       </div>
     </div>

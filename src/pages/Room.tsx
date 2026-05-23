@@ -40,21 +40,13 @@ export default function Room() {
       socket.on('connect', doJoin)
     }
 
-    const onRoomJoined = (r: RoomFullInfo) => {
-      console.log('Room joined:', r)
-      setRoom(r)
-    }
-    const onRoomUpdate = (r: RoomFullInfo) => {
-      console.log('Room update:', r)
-      setRoom(r)
-    }
+    const onRoomJoined = (r: RoomFullInfo) => setRoom(r)
+    const onRoomUpdate = (r: RoomFullInfo) => setRoom(r)
     const onGameState = (d: { board: any; currentTurn: string }) => {
-      console.log('Game state:', d)
       setBoard(d.board)
       setCurrentTurn(d.currentTurn)
     }
     const onMoveMade = (d: { move: any; moveStr: string; board: any; currentTurn: string }) => {
-      console.log('Move made:', d)
       setBoard(d.board)
       setCurrentTurn(d.currentTurn)
     }
@@ -74,10 +66,6 @@ export default function Room() {
       if (msg.includes('踢出')) navigate('/lobby')
     }
     const onKicked = () => navigate('/lobby')
-    const onChallengeUpdate = (challengeQueue: any[]) => {
-      console.log('Challenge update:', challengeQueue)
-      // 房间更新会包含挑战队列，所以不需要单独处理，但我们要确保有响应
-    }
 
     socket.on('room-joined', onRoomJoined)
     socket.on('room-update', onRoomUpdate)
@@ -87,7 +75,6 @@ export default function Room() {
     socket.on('game-over', onGameOver)
     socket.on('error', onError)
     socket.on('room-kicked', onKicked)
-    socket.on('challenge-update', onChallengeUpdate)
 
     return () => {
       socket.off('connect', doJoin)
@@ -109,16 +96,7 @@ export default function Room() {
   }, [room])
 
   const myRole: UserRole = (() => {
-    console.log('🎭 计算 myRole:')
-    console.log('  - room:', !!room)
-    console.log('  - myId:', myId)
     if (!room || !myId) return 'spectator'
-    console.log('  - room.owner.id:', room.owner.id)
-    console.log('  - room.redPlayer.id:', room.redPlayer?.id)
-    console.log('  - room.blackPlayer.id:', room.blackPlayer?.id)
-    console.log('  - owner 匹配?', room.owner.id === myId)
-    console.log('  - red 匹配?', room.redPlayer?.id === myId)
-    console.log('  - black 匹配?', room.blackPlayer?.id === myId)
     if (room.owner.id === myId) return 'owner'
     if (room.admins.find(a => a.id === myId)) return 'admin'
     if (room.redPlayer?.id === myId || room.blackPlayer?.id === myId) return 'player'
@@ -131,19 +109,12 @@ export default function Room() {
     if (room.blackPlayer?.id === myId) return 'black'
     return null
   })()
-  
-  console.log('🎮 Room 状态:')
-  console.log('  - myId:', myId)
-  console.log('  - myRole:', myRole)
-  console.log('  - mySide:', mySide)
-  console.log('  - isPlayer:', myRole === 'player')
 
   const isManager = myRole === 'owner' || myRole === 'admin'
   const isPlayer = myRole === 'player'
   const isSpectator = myRole === 'spectator'
 
   const handleMakeMove = useCallback((move: any) => {
-    console.log('🚀 发送走棋到服务器:', move)
     socket?.emit('make-move', move)
   }, [socket])
 
