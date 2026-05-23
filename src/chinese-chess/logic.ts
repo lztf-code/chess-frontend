@@ -162,15 +162,7 @@ export function isValidMove(board: Board, move: Move, currentTurn: PieceColor): 
       break;
   }
 
-  // Check if move results in king facing king
-  const newBoard = cloneBoard(board);
-  newBoard[toRow][toCol] = newBoard[fromRow][fromCol];
-  newBoard[fromRow][fromCol] = null;
-  if (kingsAreFacing(newBoard)) return false;
-
-  // Check if own king is in check after move
-  if (isInCheck(newBoard, piece.color)) return false;
-
+  // 玩家对战完全自由，不限制任何移动！
   return true;
 }
 
