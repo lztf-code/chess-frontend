@@ -109,7 +109,16 @@ export default function Room() {
   }, [room])
 
   const myRole: UserRole = (() => {
+    console.log('🎭 计算 myRole:')
+    console.log('  - room:', !!room)
+    console.log('  - myId:', myId)
     if (!room || !myId) return 'spectator'
+    console.log('  - room.owner.id:', room.owner.id)
+    console.log('  - room.redPlayer.id:', room.redPlayer?.id)
+    console.log('  - room.blackPlayer.id:', room.blackPlayer?.id)
+    console.log('  - owner 匹配?', room.owner.id === myId)
+    console.log('  - red 匹配?', room.redPlayer?.id === myId)
+    console.log('  - black 匹配?', room.blackPlayer?.id === myId)
     if (room.owner.id === myId) return 'owner'
     if (room.admins.find(a => a.id === myId)) return 'admin'
     if (room.redPlayer?.id === myId || room.blackPlayer?.id === myId) return 'player'
@@ -122,6 +131,12 @@ export default function Room() {
     if (room.blackPlayer?.id === myId) return 'black'
     return null
   })()
+  
+  console.log('🎮 Room 状态:')
+  console.log('  - myId:', myId)
+  console.log('  - myRole:', myRole)
+  console.log('  - mySide:', mySide)
+  console.log('  - isPlayer:', myRole === 'player')
 
   const isManager = myRole === 'owner' || myRole === 'admin'
   const isPlayer = myRole === 'player'
