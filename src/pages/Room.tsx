@@ -40,13 +40,21 @@ export default function Room() {
       socket.on('connect', doJoin)
     }
 
-    const onRoomJoined = (r: RoomFullInfo) => setRoom(r)
-    const onRoomUpdate = (r: RoomFullInfo) => setRoom(r)
+    const onRoomJoined = (r: RoomFullInfo) => {
+      console.log('Room joined:', r)
+      setRoom(r)
+    }
+    const onRoomUpdate = (r: RoomFullInfo) => {
+      console.log('Room update:', r)
+      setRoom(r)
+    }
     const onGameState = (d: { board: any; currentTurn: string }) => {
+      console.log('Game state:', d)
       setBoard(d.board)
       setCurrentTurn(d.currentTurn)
     }
     const onMoveMade = (d: { move: any; moveStr: string; board: any; currentTurn: string }) => {
+      console.log('Move made:', d)
       setBoard(d.board)
       setCurrentTurn(d.currentTurn)
     }
@@ -66,6 +74,10 @@ export default function Room() {
       if (msg.includes('踢出')) navigate('/lobby')
     }
     const onKicked = () => navigate('/lobby')
+    const onChallengeUpdate = (challengeQueue: any[]) => {
+      console.log('Challenge update:', challengeQueue)
+      // 房间更新会包含挑战队列，所以不需要单独处理，但我们要确保有响应
+    }
 
     socket.on('room-joined', onRoomJoined)
     socket.on('room-update', onRoomUpdate)
@@ -75,6 +87,7 @@ export default function Room() {
     socket.on('game-over', onGameOver)
     socket.on('error', onError)
     socket.on('room-kicked', onKicked)
+    socket.on('challenge-update', onChallengeUpdate)
 
     return () => {
       socket.off('connect', doJoin)
@@ -105,8 +118,8 @@ export default function Room() {
 
   const mySide: 'red' | 'black' | 'white' | null = (() => {
     if (!room || !myId) return null
-    if (room.redPlayer?.id === myId) return 'red'
-    if (room.blackPlayer?.id === myId) return room.gameType === 'international' ? 'black' : 'black'
+    if (room.redPlayer?.id === myId) return room.gameType === 'international' ? 'white' : 'red'
+    if (room.blackPlayer?.id === myId) return 'black'
     return null
   })()
 
