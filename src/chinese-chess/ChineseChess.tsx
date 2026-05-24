@@ -4,6 +4,7 @@ import {
   createInitialBoard, cloneBoard, isValidMove, isInCheck,
   isCheckmate, getAIMove, getPieceName, moveToString, getAllValidMoves,
 } from './logic'
+import Tutorial from '../components/Tutorial'
 import './ChineseChess.css'
 
 const CELL = 58        // 交叉点间距
@@ -39,6 +40,7 @@ export default function ChineseChess() {
   const [capturedByRed, setCapturedByRed] = useState<Piece[]>([])
   const [capturedByBlack, setCapturedByBlack] = useState<Piece[]>([])
   const [inCheck, setInCheck] = useState(false)
+  const [showTutorial, setShowTutorial] = useState(false)
 
   const checkGameState = useCallback((newBoard: Board, turn: PieceColor) => {
     if (isCheckmate(newBoard, turn)) {
@@ -175,7 +177,12 @@ export default function ChineseChess() {
 
   return (
     <div className="game-page">
-      <h2 className="game-title">中国象棋</h2>
+      <div className="game-header">
+        <h2 className="game-title">中国象棋</h2>
+        <button className="tutorial-btn" onClick={() => setShowTutorial(true)}>
+          📖 规则教程
+        </button>
+      </div>
       <div className="game-container">
         <div className="board-wrapper">
           <div className="captured-row">
@@ -346,6 +353,10 @@ export default function ChineseChess() {
           </div>
         </div>
       </div>
+
+      {showTutorial && (
+        <Tutorial gameType="chinese" onClose={() => setShowTutorial(false)} />
+      )}
 
       {/* Win Modal */}
       {gameOver && (

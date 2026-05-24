@@ -5,6 +5,7 @@ import {
   isICheckmate, isIStalemate, getIAIMove, getPieceSymbol,
   moveItoAlgebraic, getAllValidMoves, isValidIMove,
 } from './logic'
+import Tutorial from '../components/Tutorial'
 import './InternationalChess.css'
 
 export default function InternationalChess() {
@@ -21,6 +22,7 @@ export default function InternationalChess() {
   const [capturedByBlack, setCapturedByBlack] = useState<IPiece[]>([])
   const [inCheck, setInCheck] = useState(false)
   const [promoting, setPromoting] = useState<IMove | null>(null)
+  const [showTutorial, setShowTutorial] = useState(false)
 
   const checkGameState = useCallback((newBoard: IBoard, turn: IPieceColor) => {
     if (isICheckmate(newBoard, turn)) {
@@ -197,7 +199,12 @@ export default function InternationalChess() {
 
   return (
     <div className="game-page">
-      <h2 className="igame-title">国际象棋</h2>
+      <div className="game-header">
+        <h2 className="igame-title">国际象棋</h2>
+        <button className="tutorial-btn" onClick={() => setShowTutorial(true)}>
+          📖 规则教程
+        </button>
+      </div>
       <div className="game-container">
         <div className="iboard-wrapper">
           <div className="captured-row">
@@ -255,6 +262,10 @@ export default function InternationalChess() {
           </div>
         </div>
       </div>
+
+      {showTutorial && (
+        <Tutorial gameType="international" onClose={() => setShowTutorial(false)} />
+      )}
 
       {/* Promotion dialog */}
       {promoting && (

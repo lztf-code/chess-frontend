@@ -1,17 +1,27 @@
+import { useState } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
 import ChineseChess from './chinese-chess/ChineseChess'
 import InternationalChess from './international-chess/InternationalChess'
 import { SocketProvider } from './context/SocketContext'
 import Lobby from './pages/Lobby'
 import Room from './pages/Room'
+import Tutorial from './components/Tutorial'
 import './App.css'
 
 function Home() {
+  const [showTutorial, setShowTutorial] = useState(false)
+
   return (
     <div className="home">
       <div className="home-header">
         <h1>弈 战</h1>
         <p>楚河汉界 · 方寸之间 · 以棋会友</p>
+        <button 
+          className="tutorial-btn"
+          onClick={() => setShowTutorial('chinese')}
+        >
+          📖 游戏教程
+        </button>
       </div>
       <div className="game-cards">
         <Link to="/chinese-chess" className="game-card chinese-card">
@@ -33,6 +43,13 @@ function Home() {
           <span className="card-btn">进入大厅 →</span>
         </Link>
       </div>
+      
+      {showTutorial && (
+        <Tutorial 
+          gameType={showTutorial as 'chinese' | 'international' | 'online'} 
+          onClose={() => setShowTutorial(false)} 
+        />
+      )}
     </div>
   )
 }

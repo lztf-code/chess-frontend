@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSocket } from '../context/SocketContext'
 import { RoomInfo, GameType, RoomType } from '../types'
+import Tutorial from '../components/Tutorial'
 import './Lobby.css'
 
 export default function Lobby() {
@@ -21,6 +22,7 @@ export default function Lobby() {
   const [joinPassword, setJoinPassword] = useState('')
   const [joiningRoomId, setJoiningRoomId] = useState<string | null>(null)
   const [directJoinId, setDirectJoinId] = useState('')
+  const [showTutorial, setShowTutorial] = useState(false)
 
   useEffect(() => {
     if (!socket) return
@@ -249,6 +251,10 @@ export default function Lobby() {
             </div>
           </div>
         </div>
+      )}
+      
+      {showTutorial && (
+        <Tutorial gameType="online" onClose={() => setShowTutorial(false)} />
       )}
     </div>
   )
